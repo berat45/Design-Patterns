@@ -7,6 +7,8 @@
 
 /* S.O.L.I.D PRINCIPLE EXAMPLES */
 #include <String>
+#include <iostream>
+#include <list>
 using namespace std;
 
 /* 1 */
@@ -90,7 +92,7 @@ public:
 		/* ... */
 	}
 };
-#endif /* OCP */
+
 /* LET'S ASSUME THAT, AT THAT MOMENT, WE WANT TO ADD ANOTHER FUNCTIONALITY WHICH REGISTERS BOOKS INTO DATABASE_Y. We can
    do this only by modifying addBookToDatabase() method which is not suitable for open-closed principle. This is why the above
    class should have been introduced as below: */
@@ -139,13 +141,50 @@ class DatabaseYRegistration : public book_registeration
 		/* ... */
 	}
 };
-
+#endif /* OCP */
 
 /* 3 */
 /* Liskov Substitution Principle */
+/* When a child Class cannot perform the same actions as its parent Class, this can cause bugs.
+   If you have a Class and create another Class from it, it becomes a parent and the new Class becomes a child. The child Class should be able to do everything the parent Class can do. This process is called Inheritance.
+   The child Class should be able to process the same requests and deliver the same result as the parent Class or it could deliver a result that is of the same type. */
+#ifdef LSP
+class LspParentClass
+{
+protected:
+	std::list<int> ConstructorInputs;
+public:
+	LspParentClass() = delete;
+	LspParentClass(int input)
+	{
+		ConstructorInputs.push_back(input);
+	}
+	void constructorInputsGetter()
+	{
+		cout << "Base class --> Total number of ConstructorInputs: " << ConstructorInputs.size() << endl;
+	}
+	virtual void constructorInputsSizeCheck()
+	{
+		if (2 == ConstructorInputs.size())
+		{
+			throw 404; /* Throw dummy error */
+		}
+	}
+};
 
-
-
+/* Let's create a subclass */
+class LspChildClass : public LspParentClass
+{
+	void constructorInputsSizeCheck() override
+	{
+		if (3 == ConstructorInputs.size()) /* VIOLATION 1 */
+		{
+			/* If the child Class doesn’t meet the same requirements with the parent class, it means the child class is changed partially/completely and violates this principle. */
+			throw 505; /* VIOLATION 2 */
+		}
+	}
+};
+#endif /* LSP */
 
 
 int main()
