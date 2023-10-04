@@ -179,12 +179,43 @@ class LspChildClass : public LspParentClass
 	{
 		if (3 == ConstructorInputs.size()) /* VIOLATION 1 */
 		{
-			/* If the child Class doesnâ€™t meet the same requirements with the parent class, it means the child class is changed partially/completely and violates this principle. */
+			/* If the child Class doesn’t meet the same requirements with the parent class, it means the child class is changed partially/completely and violates this principle. */
 			throw 505; /* VIOLATION 2 */
 		}
 	}
 };
 #endif /* LSP */
+
+/* 4 */
+/* Interface Segregation Principle */
+/* Clients should not be forced to depend on methods that they do not use */
+#ifdef ISP
+class ISP_VehicleBaseClass
+{
+protected:
+	virtual void turnSteeringWheel() = 0;
+	virtual void changeShifter() = 0;
+	virtual void stopMotor() = 0;
+};
+
+class CarClass : public ISP_VehicleBaseClass
+{
+protected:
+	/* All three vehicle specific methods can be implemented here */
+};
+
+class MopedClass : public ISP_VehicleBaseClass
+{
+protected:
+	/* Mopeds don't have shifter unit. 2nd functionality cannot be implemented here */			/* --> VIOLATION OF ISP */ 
+};
+#endif /* ISP */
+
+/* 5 */
+/* Dependency Inversion Principle */
+/* High-level modules should not depend on low-level modules. Both should depend on the abstraction. Abstractions should not depend on details. Details should depend on abstractions. */
+/* WRONG   : CUSTOMER <..> PROVIDER 
+   CORRECT : CUSTOMER <..> PROVIDER INTERFACE <..> PROVIDER 1 OUT OF N PROVIDER CHILD CLASSES */
 
 
 int main()
